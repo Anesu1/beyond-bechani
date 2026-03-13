@@ -8,85 +8,92 @@ const services = [
         id: "01", 
         name: "Product Design", 
         Icon: MonitorSmartphone,
-        description: "Creating digital products that are functional, intuitive, and human-centred."
     },
     { 
         id: "02", 
         name: "UX Strategy", 
         Icon: PenTool,
-        description: "Transforming complex systems into frictionless user experiences."
     },
     { 
         id: "03", 
         name: "Design Education", 
         Icon: GraduationCap,
-        description: "Empowering the next generation of designers through mentorship."
     },
     { 
         id: "04", 
-        name: "Community", 
+        name: "Community Building", 
         Icon: Users,
-        description: "Building the design ecosystem through UX Zimbabwe and beyond."
     },
 ];
 
-const revealVariants: Variants = {
-    hidden: { y: "30%", opacity: 0 },
-    visible: { 
-        y: 0,
-        opacity: 1,
-        transition: {
-            duration: 0.8,
-            ease: [0.33, 1, 0.68, 1] as any,
-        }
-    }
-};
-
 export default function FocusServices() {
-    return (
-        <section id="services" className="section-padding bg-white grid-background">
-            <div className="max-w-[1440px] mx-auto container-padding">
-                
-                <div className="mb-20">
-                    <motion.div
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                        transition={{ staggerChildren: 0.1 }}
-                        className="flex flex-col gap-4"
-                    >
-                        <motion.span variants={revealVariants} className="label-mono text-black/40">
-                            03 — Focus
-                        </motion.span>
-                        <div className="overflow-hidden">
-                            <motion.h2 variants={revealVariants} className="h-section text-black max-w-[600px]">
-                                Bridging the gap through design
-                            </motion.h2>
-                        </div>
-                    </motion.div>
-                </div>
+    const container: Variants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.12, delayChildren: 0.1 },
+        },
+    };
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {services.map((service, idx) => (
+    const item: Variants = {
+        hidden: { y: 40, opacity: 0 },
+        visible: {
+            y: 0,
+            opacity: 1,
+            transition: { 
+                type: "spring", 
+                stiffness: 100, 
+                damping: 20,
+                ease: "easeOut" as any 
+            },
+        },
+    };
+
+    return (
+        <section id="services" className="py-32 lg:py-40 px-6 md:px-10 bg-white grid-background">
+            <div className="max-w-[1440px] mx-auto">
+                <motion.div
+                    className="mb-16 md:mb-24"
+                    initial={{ y: 40, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.8, ease: "easeOut" as any }}
+                >
+                    <p className="label-mono mb-4 text-black/40 italic">03 — Focus</p>
+                    <h2 className="h-section max-w-4xl uppercase font-black tracking-tight leading-[1] text-black">
+                        Bridging the gap between humans and technology through design.
+                    </h2>
+                </motion.div>
+
+                <motion.div
+                    className="flex flex-col border-t border-black/10"
+                    variants={container}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-100px" }}
+                >
+                    {services.map(({ id, name, Icon }) => (
                         <motion.div
-                            key={service.id}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.8, delay: idx * 0.1, ease: [0.33, 1, 0.68, 1] as any }}
-                            className="p-10 rounded-[32px] bg-black/[0.02] border border-black/5 hover:bg-black/[0.04] transition-colors"
+                            key={id}
+                            variants={item}
+                            className="py-8 md:py-12 border-b border-black/10 flex flex-col md:flex-row md:items-center justify-between gap-6 group cursor-pointer hover:bg-black/[0.02] transition-colors -mx-4 px-4 rounded-xl"
                         >
-                            <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mb-8 shadow-sm">
-                                <service.Icon className="w-6 h-6 text-black" strokeWidth={1.5} />
+                            <div className="flex items-center gap-8 md:gap-16">
+                                <span className="label-mono text-black/20 tabular-nums font-black italic text-[24px]">{id}</span>
+                                <h3 className="h1 md:text-[56px] font-black group-hover:translate-x-3 transition-transform duration-500 ease-out uppercase tracking-tighter">
+                                    {name}
+                                </h3>
                             </div>
-                            <h3 className="h-card text-black mb-4">{service.name}</h3>
-                            <p className="body-regular text-black/50">{service.description}</p>
+
+                            <div className="w-16 h-16 md:w-24 md:h-24 rounded-[2rem] bg-white border border-black/10 flex items-center justify-center shadow-lg group-hover:rotate-6 group-hover:scale-110 transition-all duration-500 ease-out">
+                                <Icon className="w-8 h-8 md:w-10 md:h-10 text-black/20 group-hover:text-black transition-colors" strokeWidth={1} />
+                            </div>
                         </motion.div>
                     ))}
-                </div>
-
+                </motion.div>
             </div>
         </section>
     );
 }
+
 
