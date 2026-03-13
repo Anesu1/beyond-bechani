@@ -3,103 +3,100 @@
 import { motion, Variants } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 import { BLOG_POSTS } from "@/lib/data";
 
-const staggerContainer: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: { staggerChildren: 0.1, delayChildren: 0.15 },
-    },
-};
-
-const fadeInUp: Variants = {
-    hidden: { y: 40, opacity: 0 },
-    visible: {
+const revealVariants: Variants = {
+    hidden: { y: "30%", opacity: 0 },
+    visible: { 
         y: 0,
         opacity: 1,
-        transition: { type: "spring", stiffness: 80, damping: 20 },
-    },
+        transition: {
+            duration: 0.8,
+            ease: [0.33, 1, 0.68, 1] as any,
+        }
+    }
 };
 
 export default function BlogPreview() {
     const latestPosts = BLOG_POSTS.slice(0, 3);
 
     return (
-        <section id="blog" className="py-32 lg:py-40 px-6 md:px-10 bg-white">
-            <div className="max-w-[1440px] mx-auto">
-
-                {/* Header */}
-                <motion.div
-                    className="flex justify-between items-end mb-16 pb-8 border-b border-black/8"
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, margin: "-100px" }}
-                    variants={fadeInUp}
-                >
-                    <div className="flex flex-col gap-2">
-                        <p className="label-mono text-black/35 italic">05 — Insights</p>
-                        <h2 className="h1 uppercase font-black tracking-tight">The Lab</h2>
-                    </div>
-                    <Link
-                        href="/blog"
-                        className="hidden md:inline-flex items-center gap-2 group label-mono text-black/40 hover:text-black transition-colors uppercase font-bold text-[12px]"
+        <section id="blog" className="section-padding bg-white grid-background">
+            <div className="max-w-[1440px] mx-auto container-padding">
+                
+                <div className="mb-20">
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        transition={{ staggerChildren: 0.1 }}
+                        className="flex flex-col gap-4"
                     >
-                        All Insights
-                        <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                    </Link>
-                </motion.div>
+                        <motion.span variants={revealVariants} className="label-mono text-black/40">
+                            05 — Blog
+                        </motion.span>
+                        <div className="overflow-hidden">
+                            <motion.h2 variants={revealVariants} className="h-section text-black max-w-[600px]">
+                                Insights & Perspective
+                            </motion.h2>
+                        </div>
+                    </motion.div>
+                </div>
 
-                {/* Blog grid */}
-                <motion.div
-                    className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12"
-                    variants={staggerContainer}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, margin: "-100px" }}
-                >
-                    {latestPosts.map((post) => (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {latestPosts.map((post, idx) => (
                         <motion.article
                             key={post.slug}
-                            variants={fadeInUp}
-                            className="group flex flex-col gap-6"
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.8, delay: idx * 0.1, ease: [0.33, 1, 0.68, 1] as any }}
+                            className="group"
                         >
-                            <Link href={`/blog/${post.slug}`} className="relative block aspect-[3/2] overflow-hidden rounded-[2rem] bg-[#F5F5F5] border border-black/5">
-                                <Image
-                                    src={post.image}
-                                    alt={post.title}
-                                    fill
-                                    className="object-cover group-hover:scale-105 group-hover:grayscale transition-all duration-700 ease-out"
-                                    unoptimized
-                                />
-                            </Link>
-
-                            <div className="flex flex-col gap-4">
-                                <div className="flex justify-between items-center text-black/30 label-mono uppercase font-black italic text-[11px] tracking-widest">
-                                    <span className="bg-black text-white px-3 py-1 rounded-full text-[9px] not-italic font-bold">{post.category}</span>
-                                    <span className="tabular-nums">{post.date}</span>
+                            <Link href={`/blog/${post.slug}`} className="block">
+                                <div className="relative aspect-[3/2] rounded-[24px] overflow-hidden bg-black/5 mb-6">
+                                    <Image
+                                        src={post.image}
+                                        alt={post.title}
+                                        fill
+                                        className="object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.05]"
+                                        unoptimized
+                                    />
+                                    {/* Arrow Overlay */}
+                                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm">
+                                            <ArrowDown className="w-6 h-6 -rotate-[135deg] text-black" />
+                                        </div>
+                                    </div>
                                 </div>
-                                <Link href={`/blog/${post.slug}`} className="group-hover:text-black/60 transition-colors">
-                                    <h3 className="h1 text-[32px] font-black uppercase tracking-tight leading-[1.1]">{post.title}</h3>
-                                </Link>
-                                <Link href={`/blog/${post.slug}`} className="inline-flex items-center gap-2 label-mono text-black/50 group-hover:text-black/80 transition-colors mt-2 uppercase font-black text-[12px] tracking-widest">
-                                    READ CASE <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                                </Link>
-                            </div>
+                                
+                                <div className="flex flex-col gap-2">
+                                    <div className="flex justify-between items-center">
+                                        <p className="label-mono text-black/40">{post.category}</p>
+                                        <p className="label-mono text-black/40">{post.date}</p>
+                                    </div>
+                                    <h3 className="h-card text-black group-hover:text-black/60 transition-colors">{post.title}</h3>
+                                </div>
+                            </Link>
                         </motion.article>
                     ))}
-                </motion.div>
-
-                {/* Mobile — see all */}
-                <div className="mt-12 md:hidden">
-                    <Link
-                        href="/blog"
-                        className="inline-flex items-center gap-4 label-mono text-black/50 border border-black/10 rounded-full px-8 py-4 uppercase font-black text-[12px]"
-                    >
-                        All Insights <ArrowRight className="w-4 h-4" />
-                    </Link>
                 </div>
+
+                {/* View All */}
+                <motion.div 
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    className="mt-20 flex justify-center md:justify-start"
+                >
+                    <Link href="/blog" className="group flex items-center gap-4 py-4 px-2">
+                        <span className="label-mono text-black group-hover:text-black/60 transition-colors">VIEW ALL INSIGHTS</span>
+                        <div className="w-10 h-10 border border-black/10 rounded-full flex items-center justify-center group-hover:bg-black group-hover:text-white transition-all">
+                            <ArrowDown className="w-4 h-4 -rotate-[135deg]" />
+                        </div>
+                    </Link>
+                </motion.div>
 
             </div>
         </section>

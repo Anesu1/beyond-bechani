@@ -2,105 +2,103 @@
 
 import { motion, Variants } from "framer-motion";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 import Image from "next/image";
 import { PROJECTS } from "@/lib/data";
 
-const staggerContainer: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: { staggerChildren: 0.12, delayChildren: 0.1 },
-    },
-};
-
-const fadeInUp: Variants = {
-    hidden: { y: 50, opacity: 0 },
-    visible: {
+const revealVariants: Variants = {
+    hidden: { y: "30%", opacity: 0 },
+    visible: { 
         y: 0,
         opacity: 1,
-        transition: { type: "spring", stiffness: 80, damping: 20 },
-    },
+        transition: {
+            duration: 0.8,
+            ease: [0.33, 1, 0.68, 1] as any,
+        }
+    }
 };
 
 export default function SelectedWorks() {
     const featuredProjects = PROJECTS.slice(0, 4);
 
     return (
-        <section id="works" className="py-32 lg:py-40 px-6 md:px-10 bg-white">
-            <div className="max-w-[1440px] mx-auto">
-
+        <section id="works" className="section-padding bg-white grid-background">
+            <div className="max-w-[1440px] mx-auto container-padding">
+                
                 {/* Section header */}
-                <motion.div
-                    className="flex justify-between items-end mb-14 pb-6 border-b border-black/8"
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, margin: "-80px" }}
-                    variants={fadeInUp}
-                >
-                    <div className="flex flex-col gap-1">
-                        <p className="label-mono text-black/35 italic">01 — Selected</p>
-                        <h2 className="h1 uppercase font-black tracking-tight">Projects</h2>
-                    </div>
-                    <Link
-                        href="/works"
-                        className="hidden md:inline-flex items-center gap-2 group label-mono text-black/40 hover:text-black transition-colors uppercase font-bold text-[12px]"
+                <div className="mb-20">
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        transition={{ staggerChildren: 0.1 }}
+                        className="flex flex-col gap-4"
                     >
-                        All Works
-                        <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                    </Link>
-                </motion.div>
+                        <motion.span variants={revealVariants} className="label-mono text-black/40">
+                            01 — Selected Works
+                        </motion.span>
+                        <div className="overflow-hidden">
+                            <motion.h2 variants={revealVariants} className="h-section text-black max-w-[600px]">
+                                Strategic design for ambitious brands
+                            </motion.h2>
+                        </div>
+                    </motion.div>
+                </div>
 
                 {/* Grid */}
-                <motion.div
-                    className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8"
-                    variants={staggerContainer}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, margin: "-80px" }}
-                >
-                    {featuredProjects.map((project) => (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-24">
+                    {featuredProjects.map((project, idx) => (
                         <motion.article
                             key={project.slug}
-                            variants={fadeInUp}
-                            className="group flex flex-col gap-4 cursor-pointer"
+                            initial={{ opacity: 0, y: 40 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, margin: "-100px" }}
+                            transition={{ duration: 0.8, delay: idx * 0.1, ease: [0.33, 1, 0.68, 1] as any }}
+                            className="group"
                         >
-                            <Link href={`/works/${project.slug}`} className="relative w-full aspect-[4/5] rounded-2xl overflow-hidden bg-[#F5F5F5] border border-black/6">
-                                <Image
-                                    src={project.image}
-                                    alt={project.name}
-                                    fill
-                                    className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-out group-hover:scale-[1.03]"
-                                    unoptimized
-                                />
-                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
-                                <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                    <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
-                                        <ArrowUpRight className="w-5 h-5" />
+                            <Link href={`/works/${project.slug}`} className="block">
+                                <div className="relative aspect-[4/3] rounded-[24px] overflow-hidden bg-black/5 mb-6">
+                                    <Image
+                                        src={project.image}
+                                        alt={project.name}
+                                        fill
+                                        className="object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.05]"
+                                        unoptimized
+                                    />
+                                    {/* Arrow Overlay */}
+                                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm">
+                                            <ArrowDown className="w-6 h-6 -rotate-[135deg] text-black" />
+                                        </div>
                                     </div>
                                 </div>
-                            </Link>
-
-                            <div className="flex justify-between items-center px-1">
-                                <div className="flex flex-col gap-0.5">
-                                    <h3 className="body-large font-bold uppercase tracking-tight leading-tight">{project.name}</h3>
-                                    <p className="label-mono text-black/35 italic">{project.category}</p>
+                                
+                                <div className="flex justify-between items-start">
+                                    <div className="flex flex-col gap-1">
+                                        <h3 className="h-card text-black">{project.name}</h3>
+                                        <p className="body-regular text-black/40">{project.category}</p>
+                                    </div>
+                                    <span className="label-mono text-black/30 mt-2">{project.year}</span>
                                 </div>
-                                <span className="label-mono text-black/25 tabular-nums font-medium">{project.year}</span>
-                            </div>
+                            </Link>
                         </motion.article>
                     ))}
-                </motion.div>
-
-                {/* Mobile — see all */}
-                <div className="mt-12 md:hidden">
-                    <Link
-                        href="/works"
-                        className="inline-flex items-center gap-2 label-mono text-black/50 border border-black/10 rounded-full px-8 py-4 hover:bg-black hover:text-white hover:border-black transition-all duration-300 font-bold uppercase text-[12px]"
-                    >
-                        All Works <ArrowUpRight className="w-4 h-4" />
-                    </Link>
                 </div>
+
+                {/* View All */}
+                <motion.div 
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    className="mt-24 flex justify-center md:justify-start"
+                >
+                    <Link href="/works" className="group flex items-center gap-4 py-4 px-2">
+                        <span className="label-mono text-black group-hover:text-black/60 transition-colors">VIEW ALL PROJECTS</span>
+                        <div className="w-10 h-10 border border-black/10 rounded-full flex items-center justify-center group-hover:bg-black group-hover:text-white transition-all">
+                            <ArrowDown className="w-4 h-4 -rotate-[135deg]" />
+                        </div>
+                    </Link>
+                </motion.div>
 
             </div>
         </section>

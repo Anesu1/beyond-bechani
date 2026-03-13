@@ -3,64 +3,47 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import Link from "next/link";
-import { X } from "lucide-react";
+import { X, ArrowDown } from "lucide-react";
+import { SOCIAL_LINKS } from "@/lib/data";
 
 const navLinks = [
     { name: "Home", href: "/" },
     { name: "Works", href: "/works" },
     { name: "Blog", href: "/blog" },
-    { name: "About", href: "/#about" },
-    { name: "Contact", href: "/#contact" },
+    { name: "Book a call", href: "/#contact" },
 ];
 
 const menuVariants: Variants = {
-    hidden: { opacity: 0, clipPath: "inset(0 0 100% 0)" },
+    hidden: { opacity: 0, y: "-100%" },
     visible: {
         opacity: 1,
-        clipPath: "inset(0 0 0% 0)",
+        y: 0,
         transition: {
-            duration: 0.6,
-            ease: [0.22, 1, 0.36, 1],
-            staggerChildren: 0.08,
-            delayChildren: 0.3,
+            duration: 0.8,
+            ease: [0.33, 1, 0.68, 1],
+            staggerChildren: 0.1,
+            delayChildren: 0.4,
         },
     },
     exit: {
         opacity: 0,
-        clipPath: "inset(0 0 100% 0)",
-        transition: { duration: 0.4, ease: "easeInOut" },
+        y: "-100%",
+        transition: { duration: 0.6, ease: [0.33, 1, 0.68, 1] },
     },
 };
 
 const linkVariants: Variants = {
-    hidden: { x: 40, opacity: 0 },
+    hidden: { y: 40, opacity: 0 },
     visible: {
-        x: 0,
+        y: 0,
         opacity: 1,
-        transition: { type: "spring", stiffness: 100, damping: 20 },
+        transition: { duration: 0.6, ease: "easeOut" },
     },
 };
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
-    const [time, setTime] = useState("");
     const [scrolled, setScrolled] = useState(false);
-
-    useEffect(() => {
-        const updateTime = () => {
-            setTime(
-                new Date().toLocaleTimeString("en-GB", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    second: "2-digit",
-                    timeZone: "Africa/Harare",
-                })
-            );
-        };
-        updateTime();
-        const id = setInterval(updateTime, 1000);
-        return () => clearInterval(id);
-    }, []);
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 20);
@@ -77,34 +60,25 @@ export default function Navbar() {
     return (
         <>
             <header
-                className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? "bg-white/90 backdrop-blur-sm border-b border-black/5" : "bg-transparent"
-                    }`}
+                className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+                    scrolled ? "bg-white/80 backdrop-blur-md py-4" : "bg-transparent py-8"
+                }`}
             >
-                <div className="max-w-[1440px] mx-auto px-6 md:px-10 h-[80px] flex items-center justify-between">
+                <div className="max-w-[1440px] mx-auto container-padding flex items-center justify-between">
                     {/* Logo */}
-                    <Link href="/" className="font-bold text-xl tracking-[-0.05em] text-black hover:opacity-60 transition-opacity">
-                        BEYOND
+                    <Link href="/" className="font-medium text-lg tracking-tight text-black flex items-center gap-2">
+                        <span className="w-6 h-6 bg-black rounded-lg flex-shrink-0" />
+                        BEYOND BECHANI
                     </Link>
-
-                    {/* Center — static content */}
-                    <div className="hidden md:flex items-center gap-2 label-mono text-black/40">
-                        <span>BASED IN HARARE, ZW</span>
-                        <span className="w-1 h-1 rounded-full bg-black/30 inline-block" />
-                        <span className="tabular-nums min-w-[68px] text-center">{time}</span>
-                        <span className="ml-1 text-black/30">(GMT+2)</span>
-                    </div>
 
                     {/* Burger */}
                     <button
                         onClick={() => setIsOpen(true)}
-                        className="flex items-center gap-2 group"
+                        className="group flex flex-col gap-1.5 w-8 items-end"
                         aria-label="Open menu"
                     >
-                        <span className="label-mono text-black/50 hidden md:block group-hover:text-black transition-colors">Menu</span>
-                        <div className="flex flex-col gap-[5px] w-6">
-                            <span className="block h-[1.5px] bg-black w-full transition-all group-hover:w-4" />
-                            <span className="block h-[1.5px] bg-black w-4 transition-all group-hover:w-full" />
-                        </div>
+                        <span className="block h-px bg-black w-full" />
+                        <span className="block h-px bg-black w-2/3 group-hover:w-full transition-all" />
                     </button>
                 </div>
             </header>
@@ -116,41 +90,56 @@ export default function Navbar() {
                         initial="hidden"
                         animate="visible"
                         exit="exit"
-                        className="fixed inset-0 z-[60] bg-black text-white flex flex-col justify-between px-6 md:px-10 pt-0 pb-10"
+                        className="fixed inset-0 z-[60] bg-[#F9F9F9] text-black flex flex-col"
                     >
-                        {/* Top bar */}
-                        <div className="max-w-[1440px] mx-auto w-full h-[80px] flex items-center justify-between">
-                            <Link href="/" className="font-bold text-xl tracking-[-0.05em] text-white" onClick={() => setIsOpen(false)}>
-                                BEYOND
+                        {/* Top bar inside menu */}
+                        <div className="max-w-[1440px] mx-auto w-full container-padding h-[100px] flex items-center justify-between">
+                            <Link href="/" className="font-medium text-lg tracking-tight" onClick={() => setIsOpen(false)}>
+                                BEYOND BECHANI
                             </Link>
                             <button onClick={() => setIsOpen(false)} aria-label="Close menu" className="hover:opacity-60 transition-opacity">
-                                <X className="w-7 h-7" />
+                                <X className="w-8 h-8" strokeWidth={1} />
                             </button>
                         </div>
 
-                        {/* Nav links */}
-                        <nav className="max-w-[1440px] mx-auto w-full flex flex-col gap-4 md:gap-6">
-                            {navLinks.map((link) => (
-                                <motion.div key={link.name} variants={linkVariants}>
-                                    <Link
+                        {/* Nav Content */}
+                        <div className="flex-grow flex flex-col justify-center items-center">
+                            <nav className="flex flex-col items-center gap-8 md:gap-12">
+                                {navLinks.map((link) => (
+                                    <motion.div key={link.name} variants={linkVariants}>
+                                        <Link
+                                            href={link.href}
+                                            className="h-section hover:opacity-40 transition-opacity block text-center uppercase"
+                                            onClick={() => setIsOpen(false)}
+                                        >
+                                            {link.name}
+                                        </Link>
+                                    </motion.div>
+                                ))}
+                            </nav>
+                        </div>
+
+                        {/* Footer row inside menu */}
+                        <div className="max-w-[1440px] mx-auto w-full container-padding pb-12 flex flex-col md:flex-row justify-between items-end gap-12">
+                            <div className="flex flex-col gap-4">
+                                <span className="label-mono text-black/40">GET IN TOUCH</span>
+                                <a href="mailto:hello@beyondbechani.com" className="body-large">hello@beyondbechani.com</a>
+                            </div>
+                            
+                            <div className="flex flex-wrap gap-8">
+                                {SOCIAL_LINKS.map((link) => (
+                                    <a
+                                        key={link.name}
                                         href={link.href}
-                                        className="h1 hover:text-white/40 transition-colors duration-200 block"
-                                        onClick={() => setIsOpen(false)}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="label-mono text-black hover:text-black/50 transition-colors uppercase"
                                     >
                                         {link.name}
-                                    </Link>
-                                </motion.div>
-                            ))}
-                        </nav>
-
-                        {/* Footer row */}
-                        <motion.div
-                            variants={linkVariants}
-                            className="max-w-[1440px] mx-auto w-full flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pt-10 border-t border-white/10"
-                        >
-                            <p className="label-mono text-white/30">© 2025 Beyond Bechani</p>
-                            <p className="label-mono text-white/30">HARARE, ZIMBABWE</p>
-                        </motion.div>
+                                    </a>
+                                ))}
+                            </div>
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>

@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Nolan Rosser | Creative Director",
-  description: "Portfolio of Nolan Rosser, Creative Director based in London.",
+  title: "Beyond Bechani | Product Designer",
+  description: "Portfolio of Beyond Bechani, Product Designer based in Harare, Zimbabwe.",
 };
 
 export default function RootLayout({

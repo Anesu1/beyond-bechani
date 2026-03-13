@@ -5,8 +5,9 @@
   --color-background: #FFFFFF;
   --color-foreground: #000000;
   --color-offwhite: #F9F9F9;
+  --color-border: rgba(0, 0, 0, 0.08);
 
-  --font-sans: var(--font-geist-sans);
+  --font-sans: "Inter", var(--font-geist-sans), system-ui;
   --font-mono: var(--font-geist-mono);
 
   --animate-marquee: marquee 28s linear infinite;
@@ -15,23 +16,13 @@
 
 /* ─── Keyframes (must be outside @theme) ─────────────────── */
 @keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-50%);
-  }
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
 @keyframes marquee2 {
-  from {
-    transform: translateX(50%);
-  }
-
-  to {
-    transform: translateX(0);
-  }
+  from { transform: translateX(50%); }
+  to { transform: translateX(0); }
 }
 
 /* ─── Base ───────────────────────────────────────────────── */
@@ -64,37 +55,55 @@ body {
   color: #FFFFFF;
 }
 
+/* ─── Utilities ──────────────────────────────────────────── */
+
+.grid-background {
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+  background-size: calc((100% - 120px) / 11 + 1px) 100%;
+  background-position: 60px 0;
+}
+
+@media (max-width: 768px) {
+  .grid-background {
+    background-size: calc((100% - 40px) / 5 + 1px) 100%;
+    background-position: 20px 0;
+  }
+}
+
 /* ─── Typography scale ───────────────────────────────────── */
-.h0 {
-  font-size: clamp(56px, 9vw, 120px);
-  font-weight: 700;
-  line-height: 0.9;
+/* Matching reference: 88px, 500 weight, -3.52px spacing */
+.h-hero {
+  font-size: clamp(48px, 8vw, 88px);
+  font-weight: 500;
+  line-height: 1.1;
   letter-spacing: -0.04em;
 }
 
-.h1 {
-  font-size: clamp(36px, 5.5vw, 80px);
-  font-weight: 600;
-  line-height: 1.05;
-  letter-spacing: -0.025em;
+/* Matching reference: 72px, 500 weight, -2.88px spacing */
+.h-section {
+  font-size: clamp(36px, 6vw, 72px);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.04em;
 }
 
-.h2 {
-  font-size: clamp(28px, 3.5vw, 52px);
-  font-weight: 600;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+.h-card {
+  font-size: clamp(24px, 2.5vw, 32px);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.03em;
 }
 
 .body-large {
-  font-size: clamp(16px, 1.5vw, 22px);
-  line-height: 1.6;
+  font-size: clamp(18px, 1.5vw, 24px);
+  line-height: 1.5;
   font-weight: 400;
+  letter-spacing: -0.02em;
 }
 
 .body-regular {
-  font-size: 17px;
-  line-height: 1.65;
+  font-size: 16px;
+  line-height: 1.6;
   font-weight: 400;
 }
 
@@ -103,4 +112,15 @@ body {
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
+}
+
+/* Section spacing matching reference (~160px) */
+.section-padding {
+  padding-top: clamp(80px, 15vh, 160px);
+  padding-bottom: clamp(80px, 15vh, 160px);
+}
+
+.container-padding {
+  padding-left: clamp(20px, 5vw, 60px);
+  padding-right: clamp(20px, 5vw, 60px);
 }

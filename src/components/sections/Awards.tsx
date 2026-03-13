@@ -2,77 +2,64 @@
 
 import { motion, Variants } from "framer-motion";
 
-const awards = [
-    { value: "Speaker", label: "DevFest\nHarare 2025" },
-    { value: "Founder", label: "UX Zim\nCommunity" },
-    { value: "Mentor", label: "Startup Hub\nZimbabwe" },
-    { value: "Leader", label: "Head of Design\nUncommon" },
+const accolades = [
+    { value: "Speaker", label: "DevFest Harare 2025" },
+    { value: "Founder", label: "UX Zimbabwe Community" },
+    { value: "Mentor", label: "Startup Hub Zimbabwe" },
+    { value: "Leader", label: "Head of Design Uncommon" },
 ];
 
-const fadeInUp: Variants = {
-    hidden: { y: 40, opacity: 0 },
-    visible: {
+const revealVariants: Variants = {
+    hidden: { y: "30%", opacity: 0 },
+    visible: { 
         y: 0,
         opacity: 1,
-        transition: { type: "spring", stiffness: 80, damping: 20 },
-    },
-};
-
-const staggerContainer: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: { staggerChildren: 0.1, delayChildren: 0.15 },
-    },
+        transition: {
+            duration: 0.8,
+            ease: [0.33, 1, 0.68, 1] as any,
+        }
+    }
 };
 
 export default function Awards() {
     return (
-        <section id="awards" className="py-32 lg:py-40 px-6 md:px-10 bg-black text-white">
-            <div className="max-w-[1440px] mx-auto">
+        <section id="awards" className="section-padding bg-white grid-background">
+            <div className="max-w-[1440px] mx-auto container-padding">
+                
+                <div className="mb-20">
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        transition={{ staggerChildren: 0.1 }}
+                        className="flex flex-col gap-4"
+                    >
+                        <motion.span variants={revealVariants} className="label-mono text-black/40">
+                            04 — Recognition
+                        </motion.span>
+                        <div className="overflow-hidden">
+                            <motion.h2 variants={revealVariants} className="h-section text-black max-w-[600px]">
+                                Impact & Community
+                            </motion.h2>
+                        </div>
+                    </motion.div>
+                </div>
 
-                <motion.div
-                    className="mb-20 text-center"
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    variants={fadeInUp}
-                >
-                    <p className="label-mono mb-4 text-white/30 tracking-widest text-[10px] uppercase font-bold italic">04 — Recognition</p>
-                    <h2 className="h1 text-white uppercase tracking-tighter font-black text-[56px] md:text-[80px]">Impact & Community</h2>
-                </motion.div>
-
-                <motion.div
-                    className="grid grid-cols-2 lg:grid-cols-4 gap-y-12"
-                    variants={staggerContainer}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, margin: "-100px" }}
-                >
-                    {awards.map((award, i) => (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                    {accolades.map((item, idx) => (
                         <motion.div
-                            key={i}
-                            variants={fadeInUp}
-                            className={`flex flex-col items-center justify-center text-center px-4 md:px-8 border-white/5 border-dashed ${i < awards.length - 1 ? "lg:border-r" : ""
-                                } ${i === 1 ? "max-lg:border-l" : ""}`}
+                            key={idx}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.8, delay: idx * 0.1, ease: [0.33, 1, 0.68, 1] as any }}
+                            className="p-10 rounded-[32px] bg-black/[0.02] border border-black/5 flex flex-col items-center justify-center text-center group hover:bg-black/[0.04] transition-colors"
                         >
-                            <span className="h1 font-black tracking-tighter mb-2 text-white italic uppercase">{award.value}</span>
-                            <span className="label-mono text-white/40 whitespace-pre-line text-center uppercase tracking-wider font-bold text-[10px]">{award.label}</span>
+                            <span className="h-card text-black mb-2 uppercase tracking-tighter">{item.value}</span>
+                            <p className="label-mono text-black/40 uppercase tracking-wider">{item.label}</p>
                         </motion.div>
                     ))}
-                </motion.div>
-
-                <motion.div
-                    className="mt-24 pt-12 border-t border-white/5 text-center"
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    variants={fadeInUp}
-                >
-                    <p className="body-large text-white/35 max-w-2xl mx-auto italic font-medium">
-                        "Technology should serve people, rather than the other way around." — Human-centered design advocate.
-                    </p>
-                </motion.div>
+                </div>
 
             </div>
         </section>

@@ -2,95 +2,73 @@
 
 import { motion, Variants } from "framer-motion";
 import { SOCIAL_LINKS } from "@/lib/data";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 
-const stats = [
-    { value: "40+", label: "Projects Completed" },
-    { value: "8+", label: "Years of Experience" },
-    { value: "Founded", label: "UX Zim & Uncommon.org" },
-];
-
-const fadeInUp: Variants = {
-    hidden: { y: 40, opacity: 0 },
-    visible: {
+const revealVariants: Variants = {
+    hidden: { y: "30%", opacity: 0 },
+    visible: { 
         y: 0,
         opacity: 1,
-        transition: { type: "spring", stiffness: 80, damping: 20 },
-    },
-};
-
-const staggerContainer: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: { staggerChildren: 0.1, delayChildren: 0.2 },
-    },
+        transition: {
+            duration: 0.8,
+            ease: [0.33, 1, 0.68, 1],
+        }
+    }
 };
 
 export default function AboutMe() {
     return (
-        <section id="about" className="py-32 lg:py-40 px-6 md:px-10 bg-[#F9F9F9]">
-            <div className="max-w-[1440px] mx-auto">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 md:gap-24">
-
-                    {/* Left Column: Bio */}
+        <section id="about" className="section-padding bg-white grid-background">
+            <div className="max-w-[1440px] mx-auto container-padding">
+                <div className="flex flex-col gap-20">
+                    
+                    {/* Bio Section */}
                     <motion.div
-                        className="lg:col-span-8"
                         initial="hidden"
                         whileInView="visible"
-                        viewport={{ once: true, margin: "-100px" }}
-                        variants={fadeInUp}
+                        viewport={{ once: true }}
+                        transition={{ staggerChildren: 0.1 }}
+                        className="flex flex-col gap-6"
                     >
-                        <p className="label-mono mb-4 text-black/40 italic">02 — About</p>
-                        <h2 className="h1 mb-10 max-w-4xl uppercase font-black tracking-tight leading-[1] text-black">
-                            Championing human‑centred design — leading with empathy.
-                        </h2>
-                        <div className="prose prose-xl prose-black text-black/60 body-regular max-w-3xl mb-12 font-medium tracking-tight">
+                        <motion.span variants={revealVariants} className="label-mono text-black/40">
+                            02 — About Me
+                        </motion.span>
+                        <div className="overflow-hidden">
+                            <motion.h2 variants={revealVariants} className="h-section text-black max-w-[900px]">
+                                Bridging the gap between humans and technology through strategic design.
+                            </motion.h2>
+                        </div>
+                        <motion.div variants={revealVariants} className="body-large text-black/50 max-w-[700px]">
                             <p>
-                                From leading product teams at Uncommon.org to founding Zimbabwe's first UX community, my mission is to transform complex systems into intuitive, meaningful experiences. I focus on creating value for both brands and audiences across multiple design disciplines for social impact and sustainable tech education.
+                                I specialize in creating digital products that are not only functional but emotionally resonant. My approach combines UX strategy with art direction to build experiences that drive real impact for businesses and their users.
                             </p>
-                        </div>
-
-                        <div className="flex flex-wrap gap-12 md:gap-20">
-                            {stats.map((stat, i) => (
-                                <div key={i} className="flex flex-col gap-1">
-                                    <span className="h1 font-black tabular-nums tracking-tighter text-black/20 italic">{stat.value}</span>
-                                    <p className="label-mono text-black/40 uppercase font-bold text-[11px] tracking-wider">{stat.label}</p>
-                                </div>
-                            ))}
-                        </div>
+                        </motion.div>
                     </motion.div>
 
-                    {/* Right Column: Links */}
-                    <motion.div
-                        className="lg:col-span-4 flex flex-col justify-end"
-                        variants={staggerContainer}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, margin: "-100px" }}
+                    {/* Social Links Row */}
+                    <motion.div 
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, delay: 0.4 }}
+                        className="flex flex-wrap gap-8 pt-12 border-t border-black/5"
                     >
-                        <p className="label-mono mb-6 text-black/30 font-bold uppercase tracking-widest text-[11px]">Network</p>
-                        <ul className="flex flex-col border-t border-black/10">
-                            {SOCIAL_LINKS.map((link) => (
-                                <motion.li
-                                    key={link.name}
-                                    variants={fadeInUp}
-                                    className="border-b border-black/10"
-                                >
-                                    <a
-                                        href={link.href}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex justify-between items-center py-6 group transition-all duration-300"
-                                    >
-                                        <span className="body-regular font-black uppercase tracking-tight group-hover:text-black text-black/50 transition-colors text-[16px]">
-                                            {link.name}
-                                        </span>
-                                        <ArrowUpRight className="w-5 h-5 text-black/15 group-hover:text-black group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
-                                    </a>
-                                </motion.li>
-                            ))}
-                        </ul>
+                        {SOCIAL_LINKS.map((link) => (
+                            <a
+                                key={link.name}
+                                href={link.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group flex items-center gap-2"
+                            >
+                                <span className="label-mono text-black group-hover:text-black/50 transition-colors uppercase">
+                                    {link.name}
+                                </span>
+                                <div className="w-8 h-8 rounded-full border border-black/10 flex items-center justify-center group-hover:bg-black group-hover:text-white transition-all">
+                                    <ArrowDown className="w-3.5 h-3.5 -rotate-[135deg]" />
+                                </div>
+                            </a>
+                        ))}
                     </motion.div>
 
                 </div>
@@ -98,3 +76,4 @@ export default function AboutMe() {
         </section>
     );
 }
+
