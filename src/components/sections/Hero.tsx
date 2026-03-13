@@ -1,19 +1,21 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 import Image from "next/image";
 
-const revealVariants = {
+const revealVariants: Variants = {
     hidden: { y: "100%" },
     visible: { 
         y: 0,
+        opacity: 1,
         transition: {
             duration: 0.8,
-            ease: [0.33, 1, 0.68, 1],
+            ease: [0.33, 1, 0.68, 1] as any,
         }
     }
 };
+
 
 const containerVariants = {
     hidden: { opacity: 0 },

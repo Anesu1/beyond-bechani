@@ -37,7 +37,7 @@ const revealVariants: Variants = {
         opacity: 1,
         transition: {
             duration: 0.8,
-            ease: [0.33, 1, 0.68, 1],
+            ease: [0.33, 1, 0.68, 1] as any,
         }
     }
 };
@@ -73,7 +73,7 @@ export default function FocusServices() {
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.8, delay: idx * 0.1, ease: [0.33, 1, 0.68, 1] }}
+                            transition={{ duration: 0.8, delay: idx * 0.1, ease: [0.33, 1, 0.68, 1] as any }}
                             className="p-10 rounded-[32px] bg-black/[0.02] border border-black/5 hover:bg-black/[0.04] transition-colors"
                         >
                             <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mb-8 shadow-sm">
